@@ -26,12 +26,14 @@ public class FileReader implements Reader {
 
     /**
      * Получение построчного содержания файла.
-     * @param file  Файл из которго происходит считывание.
-     * @return      Построчный список содержания файла.
+     *
+     * @param file Файл из которго происходит считывание.
+     * @return Построчный список содержания файла.
      * @throws IOException Если происходит ошибка ввода-вывода при чтении из файла
-     * или считывается искаженная или неотображаемая последовательность байтов
+     *                     или считывается искаженная или неотображаемая последовательность байтов
      */
-    public static List<String> getTextFromFile(File file) throws IOException {
+    public static List<String> getTextFromFile(File file) throws IOException, IllegalArgumentException,
+            UnsupportedOperationException, SecurityException {
         Path path = file.toPath();
         return Files.readAllLines(path, StandardCharsets.UTF_8);
     }
@@ -39,6 +41,7 @@ public class FileReader implements Reader {
 
     /**
      * Конструктор класса.
+     *
      * @param filePathString Строковый путь к файлу.
      */
     public FileReader(String filePathString) {
@@ -49,11 +52,18 @@ public class FileReader implements Reader {
             allLines = getTextFromFile(file);
         } catch (IOException e) {
             System.out.println("Sorry, file " + file.getPath() + " is not found!");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Sorry, file name contains incorrect characters!");
+        } catch (UnsupportedOperationException e) {
+            System.out.println("Sorry, but an unsupported option is specified!");
+        } catch (SecurityException e) {
+            System.out.println("Sorry, but do not have an access to that file!");
         }
     }
 
     /**
      * Конструктор класса.
+     *
      * @param newFile Файл, обёрткой для которого является FileReader.
      */
     public FileReader(File newFile) {
@@ -64,6 +74,12 @@ public class FileReader implements Reader {
             allLines = getTextFromFile(file);
         } catch (IOException e) {
             System.out.println("Sorry, file " + file.getPath() + " is not found!");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Sorry, file name contains incorrect characters!");
+        } catch (UnsupportedOperationException e) {
+            System.out.println("Sorry, but an unsupported option is specified!");
+        } catch (SecurityException e) {
+            System.out.println("Sorry, but do not have an access to that file!");
         }
     }
 
@@ -97,6 +113,7 @@ public class FileReader implements Reader {
 
     /**
      * Проверка элементов на равенстов.
+     *
      * @param obj Элемент для сравнения.
      * @return Значение равенства.
      */
@@ -121,5 +138,4 @@ public class FileReader implements Reader {
     public final int hashCode() {
         return (getPath()).hashCode();
     }
-
 }
