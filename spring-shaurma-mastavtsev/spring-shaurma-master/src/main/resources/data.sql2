@@ -1,0 +1,39 @@
+create table if not exists Shaurma_Order (
+    id identity
+);
+
+create table if not exists Shaurma (
+    id identity,
+    comments varchar(50) not null,
+    shaurma_order bigint not null,
+    shaurma_order_key bigint not null
+);
+
+create table if not exists Ingredient_Ref (
+    ingredient varchar(4) unique not null,
+    shaurma bigint not null,
+    shaurma_key bigint not null
+);
+
+create table if not exists Ingredient (
+    id varchar(4) unique not null,
+    name varchar(25) not null,
+    type varchar(10) not null
+);
+
+alter table Shaurma add foreign key (shaurma_order) references Shaurma_Order(id);
+
+alter table Ingredient_Ref add foreign key (ingredient) references Ingredient(id);
+
+delete from Ingredient_Ref;
+delete from Shaurma;
+delete from Shaurma_Order;
+delete from Ingredient;
+insert into Ingredient (id, name, type)
+values ('FLTO', 'Flour Tortilla', 'WRAP');
+insert into Ingredient (id, name, type)
+values ('COTO', 'Corn Tortilla', 'WRAP');
+insert into Ingredient (id, name, type)
+values ('SLSA', 'Salsa', 'SAUCE');
+insert into Ingredient (id, name, type)
+values ('SRCR', 'Sour Cream', 'SAUCE');

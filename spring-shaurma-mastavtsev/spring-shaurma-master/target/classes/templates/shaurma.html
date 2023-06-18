@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+  <title>Shaurma Builder</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    img {
+      display: block;
+      margin: 20px auto;
+      max-width: 100%;
+      height: auto;
+    }
+
+    form {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .ingredient-group {
+      border: 1px solid #ddd;
+      padding: 10px;
+    }
+
+    h3 {
+      margin-top: 0;
+    }
+
+    input[type="checkbox"] {
+      margin-right: 5px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 5px;
+      margin-bottom: 10px;
+      border: 1px solid #ddd;
+      border-radius: 3px;
+    }
+
+    .validationError {
+      color: red;
+      font-size: 12px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+
+<body>
+<h1>Соберите свою шаурму!</h1>
+<img th:src="@{/images/shava.jpg}" />
+
+<form method="POST" th:object="${shaurma}">
+  <div class="grid">
+    <div class="ingredient-group" id="sauces">
+      <h3>Выберите соус:</h3>
+      <div th:each="ingredient : ${sauce}">
+        <input th:field="*{ingredients}" type="checkbox" th:value="${ingredient.id}" />
+        <span th:text="${ingredient.name}">INGREDIENT</span><br />
+      </div>
+    </div>
+
+    <div class="ingredient-group" id="wraps">
+      <h3>Выберите лаваш:</h3>
+      <div th:each="ingredient : ${wrap}">
+        <input th:field="*{ingredients}" type="checkbox" th:value="${ingredient.id}" />
+        <span th:text="${ingredient.name}">INGREDIENT</span><br />
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <h3>Комментарий к заказу:</h3>
+    <input type="text" th:field="*{comments}" />
+    <span class="validationError" th:if="${#fields.hasErrors('comments')}" th:errors="*{comments}">Comment can not be empty</span>
+    <br />
+    <button>Submit Your Shaurma</button>
+  </div>
+</form>
+</body>
+
+</html>

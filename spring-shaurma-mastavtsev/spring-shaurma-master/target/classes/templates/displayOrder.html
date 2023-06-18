@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Current Order</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .container {
+            margin-top: 20px;
+        }
+
+        h3 {
+            margin-top: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        #another {
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        button[type="submit"] {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<h1>Welcome to Orders!</h1>
+
+<form method="POST" th:action="@{/orders}" th:object="${order}">
+    <div class="container">
+        <h3>Your Order:</h3>
+        <hr/>
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Comments</th>
+                <th>Ingredients</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="shaurma: ${order.shaurmaList}">
+                <td th:text="${shaurma.id}"></td>
+                <td th:text="${shaurma.comments}"></td>
+                <td>
+                    <ul>
+                        <li th:each="ingredient: ${shaurma.ingredients}" th:text="${ingredient}"></li>
+                    </ul>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <button type="submit">Place New Order</button>
+
+    <button type="button" id="addShaurmaBtn">Add Another Shaurma</button>
+</form>
+
+<script>
+    document.getElementById("addShaurmaBtn").addEventListener("click", function() {
+        window.location.href = "/create";
+    });
+</script>
+</body>
+</html>
