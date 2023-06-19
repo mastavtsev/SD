@@ -30,6 +30,7 @@ public class PlayerController {
 
     @PostMapping
     public Player createPlayer(@RequestBody Player player) {
+        player.setWonGames(0);
         return playerRepository.save(player);
     }
 

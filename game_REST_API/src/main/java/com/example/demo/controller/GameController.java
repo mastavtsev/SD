@@ -1,12 +1,13 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.ArrayListRequestDTO;
 import com.example.demo.exception.NotFoundException;
 import com.example.demo.model.Game;
-import com.example.demo.model.GameAction;
 import com.example.demo.repository.GameRepository;
 import com.example.demo.repository.PlayerRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,12 +35,15 @@ public class GameController {
     }
 
     @PostMapping
-    public String createGame(@RequestBody List<String> playerIds) {
+    public ResponseEntity createGame(@RequestBody ArrayListRequestDTO requestDTO) {
         Game game = new Game();
+
+        var playerIds = requestDTO.getItems();
 
         for (var playerID : playerIds) {
             if (!userRepository.existsById(playerID) && (log.isInfoEnabled())) {
                     log.info("Player with ID {} does not exist", playerID);
+                    return ResponseEntity.badRequest().build();
             } else {
                 game.getPlayersId().add(playerID);
             }
@@ -47,7 +51,7 @@ public class GameController {
 
         gameRepository.save(game);
 
-        return "/games";
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")
